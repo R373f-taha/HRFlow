@@ -1,0 +1,18 @@
+[90m= [39m[34;4mModules\Employees\Models\Employee[39;24m {#8811
+    [34muser_id[39m: [36mnull[39m,
+    [34memployee_number[39m: [32m"[39m[32mEMP-923167[39m[32m"[39m,
+    [34mdepartment_id[39m: [36mnull[39m,
+    [34mjob_title_id[39m: [36mnull[39m,
+    [34mmanager_id[39m: [36mnull[39m,
+    [34memployment_type[39m: [32m"[39m[32mpart_time[39m[32m"[39m,
+    [34mhire_date[39m: [32m"[39m[32m2020-07-12 00:00:00[39m[32m"[39m,
+    [34mtermination_date[39m: [36mnull[39m,
+    [34mtermination_reason[39m: [36mnull[39m,
+    [34mstatus[39m: [32m"[39m[32mactive[39m[32m"[39m,
+    [34mnational_id[39m: [32m"[39m[32m498085842731[39m[32m"[39m,
+    [34mphone[39m: [32m"[39m[32m(980) 946-5127[39m[32m"[39m,
+    [34maddress[39m: <<<[32mEOS[39m
+      [32m2911 Wisozk Manors Apt. 427[39m
+      [32mEast Jedidiah, OH 77581-1562[39m
+      [32mEOS[39m,
+  }

@@ -1,0 +1,11 @@
+{
+    "Auth": true,
+    "Organization": true,
+    "Employees": true,
+    "Leave": true,
+    "Attendance": true,
+    "Payroll": true,
+    "Performance": true,
+    "Reports": true,
+    "\u064fEmployee": true
+}
