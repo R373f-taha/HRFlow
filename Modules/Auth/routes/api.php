@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Modules\Auth\Http\Controllers\AuthController;
+use Modules\Auth\Http\Controllers\V1\AuthController;
 
 
 
@@ -23,7 +23,7 @@ Route::prefix('v1/auth')->group(function () {
         ->name('auth.forgot-password');
 
     Route::post('reset-password', [AuthController::class, 'resetPassword'])
-        ->name('auth.reset-password');
+        ->name('password.reset');
 
 
     /*
@@ -47,3 +47,4 @@ Route::prefix('v1/auth')->group(function () {
             ->name('auth.password');
     });
 });
+
