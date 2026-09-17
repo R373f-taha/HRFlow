@@ -16,16 +16,11 @@ return new class extends Migration
 
     $table->string('name');
 
-    $table->string('code')
-        ->unique();
+    $table->string('code')->unique();
 
-    $table->foreignId('parent_id')
-        ->nullable()
-        ->constrained('departments')
-        ->nullOnDelete();
+    $table->foreignId('parent_id')->nullable()->constrained('departments')->nullOnDelete();
 
-    $table->unsignedBigInteger('manager_id')
-        ->nullable();
+    $table->unsignedBigInteger('manager_id')->nullable();
 
     $table->timestamps();
 });
