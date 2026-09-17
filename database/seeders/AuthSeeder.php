@@ -15,11 +15,12 @@ class AuthSeeder extends Seeder
              * 3. Override name and email below
              * 4. Save the User into the database
              */
-        User::factory()
+        $admin=User::factory()
             ->admin()   //because at user factory default role is employee, we need to set it to admin`
             ->create([
                 'name' => 'HRFlow Administrator',
                 'email' => 'admin@hrflow.test',
             ]);
+        $admin->assignRole('hr-admin');
     }
 }
