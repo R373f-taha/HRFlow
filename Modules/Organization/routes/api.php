@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use Modules\Organization\Http\Controllers\V1\DepartmentController;
+use Modules\Organization\Http\Controllers\V1\JobTitleController;
 use Modules\Organization\Http\Controllers\V1\OrganizationController;
 
 Route::middleware(['auth:sanctum'])->prefix('v1')->group(function () {
@@ -39,5 +40,8 @@ Route::middleware(['auth:sanctum'])->prefix('v1')->group(function () {
 Route::prefix('v1')->middleware(['auth:sanctum'])->group(function () {
 
     Route::apiResource('departments', DepartmentController::class);
+
+        Route::apiResource('job-titles', JobTitleController::class);
+
 
 });
