@@ -14,21 +14,16 @@ return new class extends Migration
       Schema::create('job_titles', function (Blueprint $table) {
     $table->id();
 
-    $table->foreignId('department_id')
-        ->constrained()
-        ->restrictOnDelete();
+    $table->foreignId('department_id')->constrained() ->restrictOnDelete();
 
     $table->string('name');
 
-    $table->string('grade')
-        ->nullable();
+    $table->string('grade')->nullable();
 
     $table->timestamps();
 
-    $table->unique([
-        'department_id',
-        'name',
-    ]);
+    $table->unique(['department_id','name',]);
+    
 });}
     public function down(): void
     {

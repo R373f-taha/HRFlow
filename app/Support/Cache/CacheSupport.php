@@ -21,49 +21,42 @@ class CacheSupport
      */
     public static function remember(string $key, int $ttlInSeconds, Closure $callback, int $lockWaitSeconds = 5)
     {
-        // Step 1: Fast path - Attempt to retrieve data directly from cache.
+        // 1. Fast path - Attempt to retrieve data directly from cache.
         $cachedData = Cache::get($key);
         if ($cachedData !== null) {
             return $cachedData;
         }
 
-        // Step 2: Cache Miss - Acquire an atomic lock to prevent concurrent database queries.
+        // 2. Cache Miss - Acquire atomic lock cleanly
         $lockKey = "lock:{$key}";
-        $lock = Cache::lock($lockKey, $lockWaitSeconds);
-try {
-        return Cache::lock($lockKey, $lockWaitSeconds)->block($lockWaitSeconds, function () use ($key, $ttlInSeconds, $callback) {
-            $cachedData = Cache::get($key);
-            if ($cachedData !== null) {
-                return $cachedData;
-            }
 
-            $freshData = $callback();
+        try {
+            return Cache::lock($lockKey, $lockWaitSeconds)->block($lockWaitSeconds, function () use ($key, $ttlInSeconds, $callback) {
 
-            if ($freshData !== null) {
-                Cache::put($key, $freshData, $ttlInSeconds);
-            }
+              $cachedData = Cache::get($key);
+                if ($cachedData !== null) {
+                    return $cachedData;
+                }
 
-            return $freshData;
-        });
-    } catch (LockTimeoutException $e) {
-        // Fallback: If lock acquisition times out, fetch fresh data directly
-        return $callback();
+                $freshData = $callback();
+
+                if ($freshData !== null) {
+                    Cache::put($key, $freshData, $ttlInSeconds);
+                }
+
+                return $freshData;
+            });
+        } catch (LockTimeoutException $e) {
+
+            return Cache::get($key) ?? $callback();
+        }
     }
-    }
 
-    /**
-     * Remove a single key from cache.
-     */
     public static function forget(string $key): bool
     {
         return Cache::forget($key);
     }
 
-    /**
-     * Remove multiple keys from cache.
-     *
-     * @param array<int, string> $keys
-     */
     public static function forgetMany(array $keys): void
     {
         foreach ($keys as $key) {
