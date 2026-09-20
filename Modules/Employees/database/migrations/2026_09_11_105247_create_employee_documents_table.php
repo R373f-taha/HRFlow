@@ -11,26 +11,23 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('employee_documents', function (Blueprint $table) {
-    $table->id();
+       Schema::create('employee_documents', function (Blueprint $table) {
 
-    $table->foreignId('employee_id')
-        ->constrained()
-        ->cascadeOnDelete();
+       $table->id();
 
-    $table->string('type');
+       $table->foreignId('employee_id')->constrained()->cascadeOnDelete();
 
-    $table->string('file_path');
+       $table->string('type');
 
-    $table->string('original_name');
+       $table->string('file_path');
 
-    $table->string('mime_type')
-        ->nullable();
+       $table->string('original_name');
 
-    $table->unsignedBigInteger('file_size')
-        ->nullable();
+       $table->string('mime_type')->nullable();
 
-    $table->timestamps();
+       $table->unsignedBigInteger('file_size')->nullable();
+
+       $table->timestamps();
 });
     }
 

@@ -14,20 +14,15 @@ return new class extends Migration
      Schema::create('salary_structures', function (Blueprint $table) {
     $table->id();
 
-    $table->foreignId('employee_id')
-        ->constrained()
-        ->cascadeOnDelete();
+    $table->foreignId('employee_id')->constrained()->cascadeOnDelete();
 
     $table->decimal('basic_salary', 12, 2);
 
-    $table->decimal('housing_allowance', 12, 2)
-        ->default(0);
+    $table->decimal('housing_allowance', 12, 2)->default(0);
 
-    $table->decimal('transport_allowance', 12, 2)
-        ->default(0);
+    $table->decimal('transport_allowance', 12, 2)->default(0);
 
-    $table->decimal('other_allowances', 12, 2)
-        ->default(0);
+    $table->decimal('other_allowances', 12, 2)->default(0);
 
     $table->date('effective_from');
 
