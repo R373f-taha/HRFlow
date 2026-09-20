@@ -12,50 +12,34 @@ return new class extends Migration
     public function up(): void
     {
       Schema::create('employees', function (Blueprint $table) {
-    $table->id();
 
-    $table->foreignId('user_id')
-        ->unique()
-        ->constrained()
-        ->cascadeOnDelete();
+   $table->id();
 
-    $table->string('employee_number')
-        ->unique();
+    $table->foreignId('user_id')->unique()->constrained()->cascadeOnDelete();
 
-    $table->foreignId('department_id')
-        ->constrained()
-        ->restrictOnDelete();
+    $table->string('employee_number')->unique();
 
-    $table->foreignId('job_title_id')
-        ->constrained()
-        ->restrictOnDelete();
+    $table->foreignId('department_id')->constrained()->restrictOnDelete();
 
-    $table->foreignId('manager_id')
-        ->nullable()
-        ->constrained('employees')
-        ->nullOnDelete();
+    $table->foreignId('job_title_id')->constrained()->restrictOnDelete();
+
+    $table->foreignId('manager_id')->nullable()->constrained('employees')->nullOnDelete();
 
     $table->string('employment_type');
 
     $table->date('hire_date');
 
-    $table->date('termination_date')
-        ->nullable();
+    $table->date('termination_date')->nullable();
 
-    $table->string('termination_reason')
-        ->nullable();
+    $table->string('termination_reason')->nullable();
 
-    $table->string('status')
-        ->default('active');
+    $table->string('status')->default('active');
 
-    $table->string('national_id')
-        ->unique();
+    $table->string('national_id')->unique();
 
-    $table->string('phone')
-        ->nullable();
+    $table->string('phone')->nullable();
 
-    $table->text('address')
-        ->nullable();
+    $table->text('address')->nullable();
 
     $table->timestamps();
 

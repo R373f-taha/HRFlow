@@ -12,48 +12,26 @@ class JobTitleService
     /**
      * Retrieve all job titles with cached department relation.
      */
-    public function getAllCached(): Collection
+   public function getAllCached(): array
     {
-        $data = CacheSupport::remember('job_titles.all', 3600, function () {
-            return JobTitle::with('department')->latest()->get()->toArray();
+        return CacheSupport::remember('job_titles.all', 3600, function () {
+            return JobTitle::with('department')
+                ->latest()
+                ->get()
+                ->toArray(); // تخزين وتصدير مصفوفة صافية تتضمن علاقة الـ department
         });
-
-        return $this->hydrateWithDepartment($data);
     }
 
-    /**
-     * Get all job titles belonging to a specific department (cached).
-     */
-    public function getByDepartmentCached(int $departmentId): Collection
+    public function getByDepartmentCached(int $departmentId): array
     {
-        $data = CacheSupport::remember("job_titles.department.{$departmentId}", 3600, function () use ($departmentId) {
+        return CacheSupport::remember("job_titles.department.{$departmentId}", 3600, function () use ($departmentId) {
             return JobTitle::with('department')
                 ->where('department_id', $departmentId)
                 ->latest()
                 ->get()
                 ->toArray();
         });
-
-        return $this->hydrateWithDepartment($data);
     }
 
-    /**
-     * Hydrate collection of JobTitle models and set nested Department relations.
-     */
-    protected function hydrateWithDepartment(array $data): Collection
-    {
-        $jobTitles = JobTitle::hydrate($data);
-        $dataKeyed = collect($data)->keyBy('id');
-
-        return $jobTitles->map(function (JobTitle $jobTitle) use ($dataKeyed) {
-            $rawItem = $dataKeyed->get($jobTitle->id);
-
-            if (isset($rawItem['department'])) {
-                $departmentModel = (new Department)->newFromBuilder($rawItem['department']);
-                $jobTitle->setRelation('department', $departmentModel);
-            }
-
-            return $jobTitle;
-        });
-    }
+ 
 }

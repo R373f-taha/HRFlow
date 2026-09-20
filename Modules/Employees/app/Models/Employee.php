@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\Cache;
 use Modules\Auth\Models\User;
 use Modules\Leave\Models\LeaveBalance;
 use Modules\Leave\Models\LeaveRequest;
@@ -119,5 +120,25 @@ class Employee extends Model
     public function performanceReviews(): HasMany
     {
         return $this->hasMany(PerformanceReview::class);
+    }
+
+    protected static function booted(): void
+    {
+        $clearCache = function (Employee $employee) {
+            //  Clear single detail cache key matching GetEmployeesService
+            Cache::forget("employees.detail.{$employee->id}");
+
+            //  Clear listing cache
+            // If using Redis/Memcached (supports tags):
+            if (Cache::supportsTags()) {
+                Cache::tags(['employees.list'])->flush();
+            } else {
+                //If using file/database drivers, clear cache tag or flush
+                Cache::flush();
+            }
+        };
+
+        static::saved($clearCache);
+        static::deleted($clearCache);
     }
 }
