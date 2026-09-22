@@ -75,6 +75,9 @@ class RolesAndPermissionsSeeder extends Seeder
 
             'performance-reviews.create',
             'performance-reviews.update',
+
+            'viewDocuments',
+            'uploadDocument'
         ];
 
         /*

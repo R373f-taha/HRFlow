@@ -34,7 +34,7 @@ class GetEmployeesService
                 ->orderBy('created_at', 'desc')
                 ->paginate($perPage);
 
-            return EmployeeResource::collection($employees)->response()->getData(true);
+            return EmployeeResource::collection($employees)->response()->getData(true);//convert result to array format for caching
         });
     }
 

@@ -30,7 +30,8 @@ class EmployeeResource extends JsonResource
             ),
 
             'employment_type' => $this->employment_type,
-            'hire_date' => $this->hire_date,
+           // 'hire_date' => $this->hire_date,
+           'hire_date' => $this->hire_date ? $this->hire_date->format('Y-m-d') : null,
             'status' => $this->status,
         ];
     }
