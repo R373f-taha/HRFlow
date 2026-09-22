@@ -45,17 +45,7 @@ class EmployeesController extends Controller
             ->setStatusCode(201);
     }
 
-    /**
-     * Display the specified resource.
-     */
-    // public function show(Employee $employee, GetEmployeesService $service): EmployeeResource
-    // {
-    //     $this->authorize('view', $employee);
 
-    //     $cachedEmployee = $service->getById($employee->id);
-
-    //     return new EmployeeResource($cachedEmployee);
-    // }
 
     public function show(Employee $employee, GetEmployeesService $service): JsonResponse
 {

@@ -45,16 +45,17 @@ class EmployeePolicy
         return $user->hasRole('hr-admin');
     }
 
+
+
+    public function uploadDocument(User $user, Employee $employee): bool
+    {
+        return $user->hasRole('hr-admin');
+    }
+
     public function viewDocuments(User $user, Employee $employee): bool
     {
-        if ($user->hasRole('hr-admin')) {
-            return true;
-        }
-
-        if ($user->hasRole('manager')) {
-            return $user->employee?->id === $employee->manager_id;
-        }
-
-        return $user->employee?->id === $employee->id;
+        return $user->hasRole('hradmin')
+            || $employee->manager?->user_id === $user->id
+            || $employee->user_id === $user->id;
     }
 }
