@@ -12,20 +12,18 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('leave_types', function (Blueprint $table) {
-              $table->id();
 
-    $table->string('name')
-        ->unique();
+        $table->id();
 
-    $table->unsignedInteger('annual_days');
+       $table->string('name')->unique();
 
-    $table->boolean('is_paid')
-        ->default(true);
+       $table->unsignedInteger('annual_days');
 
-    $table->boolean('requires_document')
-        ->default(false);
+       $table->boolean('is_paid') ->default(true);
 
-    $table->timestamps();
+       $table->boolean('requires_document')->default(false);
+
+       $table->timestamps();
         });
     }
 

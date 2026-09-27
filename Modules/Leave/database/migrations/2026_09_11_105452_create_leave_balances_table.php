@@ -12,22 +12,18 @@ return new class extends Migration
     public function up(): void
     {
     Schema::create('leave_balances', function (Blueprint $table) {
+
     $table->id();
 
-    $table->foreignId('employee_id')
-        ->constrained()
-        ->cascadeOnDelete();
+    $table->foreignId('employee_id')->constrained()->cascadeOnDelete();
 
-    $table->foreignId('leave_type_id')
-        ->constrained()
-        ->restrictOnDelete();
+    $table->foreignId('leave_type_id')->constrained()->restrictOnDelete();
 
     $table->unsignedSmallInteger('year');
 
     $table->decimal('allocated_days', 8, 2);
 
-    $table->decimal('used_days', 8, 2)
-        ->default(0);
+    $table->decimal('used_days', 8, 2)->default(0);
 
     $table->decimal('remaining_days', 8, 2);
 

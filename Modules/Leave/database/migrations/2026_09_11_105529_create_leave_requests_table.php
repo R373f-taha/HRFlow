@@ -14,13 +14,9 @@ return new class extends Migration
 Schema::create('leave_requests', function (Blueprint $table) {
     $table->id();
 
-    $table->foreignId('employee_id')
-        ->constrained()
-        ->restrictOnDelete();
+    $table->foreignId('employee_id')->constrained()->restrictOnDelete();
 
-    $table->foreignId('leave_type_id')
-        ->constrained()
-        ->restrictOnDelete();
+    $table->foreignId('leave_type_id')->constrained()->restrictOnDelete();
 
     $table->date('start_date');
 
@@ -28,32 +24,21 @@ Schema::create('leave_requests', function (Blueprint $table) {
 
     $table->decimal('days_count', 8, 2);
 
-    $table->string('status')
-        ->default('pending');
+    $table->string('status')->default('pending');
 
-  
 
-    $table->foreignId('manager_approved_by')
-        ->nullable()
-        ->constrained('users')
-        ->nullOnDelete();
 
-    $table->timestamp('manager_approved_at')
-        ->nullable();
+    $table->foreignId('manager_approved_by')->nullable()->constrained('users')->nullOnDelete();
 
-    $table->foreignId('admin_approved_by')
-        ->nullable()
-        ->constrained('users')
-        ->nullOnDelete();
+    $table->timestamp('manager_approved_at')->nullable();
 
-    $table->timestamp('admin_approved_at')
-        ->nullable();
+    $table->foreignId('admin_approved_by')->nullable() ->constrained('users')->nullOnDelete();
 
-    $table->text('rejection_reason')
-        ->nullable();
+    $table->timestamp('admin_approved_at')->nullable();
 
-    $table->string('document_path')
-        ->nullable();
+    $table->text('rejection_reason')->nullable();
+
+    $table->string('document_path')->nullable();
 
     $table->timestamps();
 
