@@ -2,8 +2,10 @@
 
 namespace Modules\Leave\Providers;
 
-use Nwidart\Modules\Support\ModuleServiceProvider;
 use Illuminate\Console\Scheduling\Schedule;
+use Modules\Leave\Models\LeaveRequest;
+use Modules\Leave\Observers\LeaveRequestObserver;
+use Nwidart\Modules\Support\ModuleServiceProvider;
 
 class LeaveServiceProvider extends ModuleServiceProvider
 {
@@ -35,9 +37,20 @@ class LeaveServiceProvider extends ModuleServiceProvider
     ];
 
     /**
+     * Boot the application services.
+     */
+    public function boot(): void
+    {
+        parent::boot();
+
+        // Register Model Observers
+        LeaveRequest::observe(LeaveRequestObserver::class);
+    }
+
+    /**
      * Define module schedules.
-     * 
-     * @param $schedule
+     *
+     * @param  $schedule
      */
     // protected function configureSchedules(Schedule $schedule): void
     // {

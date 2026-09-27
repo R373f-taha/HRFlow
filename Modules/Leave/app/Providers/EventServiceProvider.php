@@ -3,6 +3,10 @@
 namespace Modules\Leave\Providers;
 
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
+use Modules\Leave\Events\LeaveRequestApproved;
+use Modules\Leave\Events\LeaveRequestSubmitted;
+use Modules\Leave\Listeners\SendLeaveRequestNotificationToManager;
+use Modules\Leave\Listeners\UpdateBalanceAndNotifyOnApproval;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -11,8 +15,14 @@ class EventServiceProvider extends ServiceProvider
      *
      * @var array<string, array<int, string>>
      */
-    protected $listen = [];
-
+    protected $listen = [
+        LeaveRequestSubmitted::class => [
+            SendLeaveRequestNotificationToManager::class,
+        ],
+        LeaveRequestApproved::class => [
+            UpdateBalanceAndNotifyOnApproval::class,
+        ],
+    ];
     /**
      * Indicates if events should be discovered.
      *

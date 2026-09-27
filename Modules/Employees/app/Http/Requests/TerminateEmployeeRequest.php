@@ -14,7 +14,7 @@ class TerminateEmployeeRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'termination_date' => ['required', 'date', 'after_or_equal:today'],
+            'termination_date' => ['required', 'date'],
             'termination_reason' => ['required', 'string', 'max:1000'],
         ];
     }

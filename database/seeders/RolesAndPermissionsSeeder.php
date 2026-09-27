@@ -77,7 +77,8 @@ class RolesAndPermissionsSeeder extends Seeder
             'performance-reviews.update',
 
             'viewDocuments',
-            'uploadDocument'
+            'uploadDocument',
+
         ];
 
         /*
@@ -121,6 +122,9 @@ class RolesAndPermissionsSeeder extends Seeder
             'leave-requests.reject',
             'performance-reviews.create',
             'performance-reviews.update',
+            'viewDocuments',
+            'uploadDocument',
+
         ]);
 
         /*

@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Mcp\Tools\ClearRoutesAndTestTool;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 use Modules\Organization\Models\Department;
@@ -23,5 +24,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Gate::policy(Department::class, DepartmentPolicy::class);
+
+        $this->app->singleton(ClearRoutesAndTestTool::class);
     }
 }
