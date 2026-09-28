@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Cache;
 use Modules\Auth\Models\User;
 use Modules\Employees\Models\Employee;
-use Mockery;
+
 use Tests\TestCase;
 
 describe("Profile / authenticated user unit tests (No DB)", function () {
