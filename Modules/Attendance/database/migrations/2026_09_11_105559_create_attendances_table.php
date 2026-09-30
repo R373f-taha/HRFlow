@@ -10,32 +10,37 @@ return new class extends Migration
      * Run the migrations.
      */
     public function up(): void
+
     {
-Schema::create('attendances', function (Blueprint $table) {
-    $table->id();
+         Schema::create('attendances', function (Blueprint $table) {
 
-    $table->foreignId('employee_id')
-        ->constrained()
-        ->cascadeOnDelete();
+           $table->id();
 
-    $table->date('date');
 
-    $table->time('check_in')
-        ->nullable();
+           $table->foreignId('employee_id')->constrained()->cascadeOnDelete();
 
-    $table->time('check_out')
-        ->nullable();
 
-    $table->string('status');
+           $table->date('date');
 
-    $table->text('note')
-        ->nullable();
 
-    $table->timestamps();
+           $table->time('check_in')->nullable();
 
-    $table->unique([
-        'employee_id',
-        'date',
+
+           $table->time('check_out')->nullable();
+
+
+           $table->string('status');
+
+
+           $table->text('note')->nullable();
+
+
+           $table->timestamps();
+
+
+           $table->unique([
+           'employee_id',
+            'date',
     ]);//employee can only have one attendance record per day
 });
     }
