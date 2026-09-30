@@ -2,8 +2,11 @@
 
 namespace Modules\Attendance\Providers;
 
-use Nwidart\Modules\Support\ModuleServiceProvider;
 use Illuminate\Console\Scheduling\Schedule;
+use Illuminate\Support\Facades\Gate;
+use Modules\Attendance\Models\Attendance;
+use Modules\Attendance\Policies\AttendancePolicy;
+use Nwidart\Modules\Support\ModuleServiceProvider;
 
 class AttendanceServiceProvider extends ModuleServiceProvider
 {
@@ -18,11 +21,13 @@ class AttendanceServiceProvider extends ModuleServiceProvider
     protected string $nameLower = 'attendance';
 
     /**
-     * Command classes to register.
+     * The policy mappings for the module.
      *
-     * @var string[]
+     * @var array<class-string, class-string>
      */
-    // protected array $commands = [];
+    protected array $policies = [
+        Attendance::class => AttendancePolicy::class,
+    ];
 
     /**
      * Provider classes to register.
@@ -35,12 +40,22 @@ class AttendanceServiceProvider extends ModuleServiceProvider
     ];
 
     /**
-     * Define module schedules.
-     * 
-     * @param $schedule
+     * Boot the application services.
      */
-    // protected function configureSchedules(Schedule $schedule): void
-    // {
-    //     $schedule->command('inspire')->hourly();
-    // }
+    public function boot(): void
+    {
+        parent::boot();
+
+        $this->registerPolicies();
+    }
+
+    /**
+     * Register the module's policies.
+     */
+    protected function registerPolicies(): void
+    {
+        foreach ($this->policies as $model => $policy) {
+            Gate::policy($model, $policy);
+        }
+    }
 }
