@@ -10,26 +10,13 @@ use Spatie\Permission\PermissionRegistrar;
 class RolesAndPermissionsSeeder extends Seeder
 {
     /**
-     * Seed HRFlow roles and permissions.
-     *
-     * The permissions below are derived from the access matrix
-     * defined in HRFlow_Final_Spec.pdf.
-     *
-     * Spatie is responsible for HOW these permissions are stored
-     * and assigned.
+     * Seed HRFlow roles and permissions based on the access matrix.
      */
     public function run(): void
     {
         // Clear Spatie's cached permissions before seeding.
         app()[PermissionRegistrar::class]->forgetCachedPermissions();
 
-        /*
-         * HRFlow permissions.
-         *
-         * We intentionally do NOT create permissions for every GET
-         * endpoint. Some endpoints are available to any authenticated
-         * user according to the specification.
-         */
         $permissions = [
             // Organization
             'departments.create',
@@ -58,14 +45,21 @@ class RolesAndPermissionsSeeder extends Seeder
             'attendance.create',
             'attendance.update',
 
-            // Payroll
+            // Payroll - Salary Structures
+            'salary-structures.view',
             'salary-structures.create',
             'salary-structures.update',
 
+            // Payroll - Payroll Runs
+            'payroll-runs.view',
             'payroll-runs.create',
             'payroll-runs.process',
             'payroll-runs.finalize',
+            'payroll-runs.payslips.view',
 
+            // Payroll - Payslips & Deductions
+            'payslips.view',
+            'payslips.my.view',
             'payslips.deductions.create',
 
             // Performance
@@ -76,47 +70,29 @@ class RolesAndPermissionsSeeder extends Seeder
             'performance-reviews.create',
             'performance-reviews.update',
 
+            // Documents
             'viewDocuments',
             'uploadDocument',
-
         ];
 
-        /*
-         * Create permissions first.
-         *
-         * This is important because roles will receive these
-         * existing permissions below.
-         */
+        // Create all permissions with 'api' guard
         foreach ($permissions as $permission) {
             Permission::findOrCreate($permission, 'api');
         }
 
         /*
          * HR Admin
-         *
-         * The specification explicitly states that HR Admin
-         * has full system access.
-         *
-         * Therefore this role receives all HRFlow permissions.
+         * Has full access to all permissions.
          */
         $hrAdmin = Role::findOrCreate('hr-admin', 'api');
-
         $hrAdmin->syncPermissions(
             Permission::where('guard_name', 'api')->get()
         );
 
         /*
          * Department Manager
-         *
-         * Manager can:
-         * - approve/reject leave requests
-         * - create/update performance reviews
-         *
-         * Department-level restrictions will be enforced
-         * later through Policies.
          */
         $manager = Role::findOrCreate('department-manager', 'api');
-
         $manager->syncPermissions([
             'leave-requests.approve',
             'leave-requests.reject',
@@ -124,26 +100,19 @@ class RolesAndPermissionsSeeder extends Seeder
             'performance-reviews.update',
             'viewDocuments',
             'uploadDocument',
-
         ]);
 
         /*
          * Employee
-         *
-         * Employee can:
-         * - submit leave requests
-         * - cancel pending leave requests
-         * - view their leave balance
-         *
-         * Ownership of employee/payslip/performance data will
-         * be enforced through Policies.
+         * Can submit/delete own leaves, view balance, and view own payslips.
          */
         $employee = Role::findOrCreate('employee', 'api');
-
         $employee->syncPermissions([
             'leave-requests.create',
             'leave-requests.delete',
             'leave-requests.balance.view',
+            'payslips.my.view',
+            'payslips.view', // Ownership checked via Policy for own payslip view
         ]);
 
         // Clear the cache again after creating/assigning permissions.

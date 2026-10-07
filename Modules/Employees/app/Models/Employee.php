@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Support\Facades\Cache;
 use Modules\Auth\Models\User;
 use Modules\Leave\Models\LeaveBalance;
@@ -140,5 +141,10 @@ class Employee extends Model
 
         static::saved($clearCache);
         static::deleted($clearCache);
+    }
+
+    public function salaryStructure(): HasOne 
+    {
+        return $this->hasOne(SalaryStructure::class);
     }
 }

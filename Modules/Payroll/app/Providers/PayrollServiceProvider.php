@@ -2,8 +2,15 @@
 
 namespace Modules\Payroll\Providers;
 
+use Illuminate\Support\Facades\Gate;
 use Nwidart\Modules\Support\ModuleServiceProvider;
-use Illuminate\Console\Scheduling\Schedule;
+
+use Modules\Payroll\Models\PayrollRun;
+use Modules\Payroll\Models\Payslip;
+use Modules\Payroll\Models\SalaryStructure;
+use Modules\Payroll\Policies\PayrollRunPolicy;
+use Modules\Payroll\Policies\PayslipPolicy;
+use Modules\Payroll\Policies\SalaryStructurePolicy;
 
 class PayrollServiceProvider extends ModuleServiceProvider
 {
@@ -18,11 +25,15 @@ class PayrollServiceProvider extends ModuleServiceProvider
     protected string $nameLower = 'payroll';
 
     /**
-     * Command classes to register.
+     * The policy mappings for the module.
      *
-     * @var string[]
+     * @var array<class-string, class-string>
      */
-    // protected array $commands = [];
+    protected array $policies = [
+        SalaryStructure::class => SalaryStructurePolicy::class,
+        PayrollRun::class => PayrollRunPolicy::class,
+        Payslip::class => PayslipPolicy::class,
+    ];
 
     /**
      * Provider classes to register.
@@ -35,12 +46,22 @@ class PayrollServiceProvider extends ModuleServiceProvider
     ];
 
     /**
-     * Define module schedules.
-     * 
-     * @param $schedule
+     * Boot the application services.
      */
-    // protected function configureSchedules(Schedule $schedule): void
-    // {
-    //     $schedule->command('inspire')->hourly();
-    // }
+    public function boot(): void
+    {
+        parent::boot();
+
+        $this->registerPolicies();
+    }
+
+    /**
+     * Register module policies with the Gate.
+     */
+    protected function registerPolicies(): void
+    {
+        foreach ($this->policies as $model => $policy) {
+            Gate::policy($model, $policy);
+        }
+    }
 }

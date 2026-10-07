@@ -18,14 +18,11 @@ return new class extends Migration
 
     $table->unsignedTinyInteger('month');
 
-    $table->string('status')
-        ->default('draft');
+    $table->string('status')->default('draft');
 
-    $table->timestamp('processed_at')
-        ->nullable();
+    $table->timestamp('processed_at')->nullable();
 
-    $table->timestamp('finalized_at')
-        ->nullable();
+    $table->timestamp('finalized_at')->nullable();
 
     $table->timestamps();
 
