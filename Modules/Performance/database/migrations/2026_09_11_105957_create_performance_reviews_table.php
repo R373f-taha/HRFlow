@@ -12,33 +12,27 @@ return new class extends Migration
     public function up(): void
     {
     Schema::create('performance_reviews', function (Blueprint $table) {
+
     $table->id();
 
-    $table->foreignId('performance_cycle_id')
-        ->constrained()
-        ->cascadeOnDelete();
 
-    $table->foreignId('employee_id')
-        ->constrained()
-        ->restrictOnDelete();
+    $table->foreignId('performance_cycle_id') ->constrained()->cascadeOnDelete();
 
-    $table->foreignId('manager_id')
-        ->constrained('employees')
-        ->restrictOnDelete();
+    $table->foreignId('employee_id') ->constrained()->restrictOnDelete();
+
+    $table->foreignId('manager_id') ->constrained('employees')->restrictOnDelete();
 
     $table->unsignedTinyInteger('overall_rating');
 
-    $table->text('strengths')
-        ->nullable();
+    $table->text('strengths')->nullable();
 
-    $table->text('areas_for_improvement')
-        ->nullable();
+    $table->text('areas_for_improvement')->nullable();
 
-    $table->text('goals')
-        ->nullable();
+    $table->text('goals') ->nullable();
 
     $table->timestamps();
-$table->unique(
+
+    $table->unique(
     ['performance_cycle_id', 'employee_id', 'manager_id'],
     'performance_review_unique'
 );

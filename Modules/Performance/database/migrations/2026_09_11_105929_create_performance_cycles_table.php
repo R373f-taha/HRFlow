@@ -12,18 +12,23 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('performance_cycles', function (Blueprint $table) {
-    $table->id();
 
-    $table->string('name');
+        $table->id();
 
-    $table->date('starts_at');
 
-    $table->date('ends_at');
+        $table->string('name');
 
-    $table->string('status')
-        ->default('draft');
 
-    $table->timestamps();
+        $table->date('starts_at');
+
+
+        $table->date('ends_at');
+
+
+        $table->string('status')->default('draft');
+
+
+        $table->timestamps();
 });
     }
 

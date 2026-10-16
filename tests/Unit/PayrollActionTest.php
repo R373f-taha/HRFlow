@@ -21,7 +21,6 @@ describe("Payroll / actions unit tests (No DB)", function () {
     uses(TestCase::class);
 
     beforeEach(function () {
-        // تمرير الـ Transactions بدون التعامل مع قاعدة البيانات
         DB::shouldReceive('transaction')
             ->andReturnUsing(fn (callable $callback) => $callback());
     });

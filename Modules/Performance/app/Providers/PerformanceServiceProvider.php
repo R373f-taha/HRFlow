@@ -2,8 +2,13 @@
 
 namespace Modules\Performance\Providers;
 
+use Illuminate\Support\Facades\Gate;
+use Modules\Performance\Policies\PerformanceCyclePolicy;
 use Nwidart\Modules\Support\ModuleServiceProvider;
-use Illuminate\Console\Scheduling\Schedule;
+use Modules\Performance\Models\PerformanceCycle;
+use Modules\Performance\Models\PerformanceReview;
+
+use Modules\Performance\Policies\PerformanceReviewPolicy;
 
 class PerformanceServiceProvider extends ModuleServiceProvider
 {
@@ -18,13 +23,6 @@ class PerformanceServiceProvider extends ModuleServiceProvider
     protected string $nameLower = 'performance';
 
     /**
-     * Command classes to register.
-     *
-     * @var string[]
-     */
-    // protected array $commands = [];
-
-    /**
      * Provider classes to register.
      *
      * @var string[]
@@ -35,12 +33,32 @@ class PerformanceServiceProvider extends ModuleServiceProvider
     ];
 
     /**
-     * Define module schedules.
-     * 
-     * @param $schedule
+     * The policy mappings for the module.
+     *
+     * @var array<class-string, class-string>
      */
-    // protected function configureSchedules(Schedule $schedule): void
-    // {
-    //     $schedule->command('inspire')->hourly();
-    // }
+    protected array $policies = [
+        PerformanceCycle::class => PerformanceCyclePolicy::class,
+        PerformanceReview::class => PerformanceReviewPolicy::class,
+    ];
+
+    /**
+     * Boot the application events.
+     */
+    public function boot(): void
+    {
+        parent::boot();
+
+        $this->registerPolicies();
+    }
+
+    /**
+     * Register the module policies via Gate facade.
+     */
+    protected function registerPolicies(): void
+    {
+        foreach ($this->policies as $model => $policy) {
+            Gate::policy($model, $policy);
+        }
+    }
 }
