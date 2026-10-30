@@ -12,20 +12,23 @@ return new class extends Migration
     public function up(): void
     {
       Schema::create('payslip_deductions', function (Blueprint $table) {
-    $table->id();
 
-    $table->foreignId('payslip_id')
-        ->constrained()
-        ->cascadeOnDelete();
+      $table->id();
 
-    $table->string('name');
 
-    $table->text('reason')
-        ->nullable();
+      $table->foreignId('payslip_id') ->constrained()->cascadeOnDelete();
 
-    $table->decimal('amount', 12, 2);
 
-    $table->timestamps();
+      $table->string('name');
+
+
+      $table->text('reason')->nullable();
+
+
+      $table->decimal('amount', 12, 2);
+
+
+      $table->timestamps();
 });
     }
 
